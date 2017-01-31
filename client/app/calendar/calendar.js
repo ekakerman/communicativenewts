@@ -10,6 +10,7 @@ angular.module('app.calendar', ['ngSanitize'])
     $scope.username = "communicativenewts";
     $scope.timezone = "America/New_York";
 
+    // source for iframe used in calendar.html
     $scope.calSource = "https://calendar.google.com/calendar/embed?showPrint=0&mode=AGENDA&src=" + $scope.username + "%40gmail.com&ctz=" + $scope.timezone;
 
   });
