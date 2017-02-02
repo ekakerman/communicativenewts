@@ -62,13 +62,26 @@ angular.module('app.factory', [])
       }
       return timeBlock;
     });
-  return day;
-};
+    return day;
+  };
+
+  var findSolution = function(day, events, n, userData) {
+    //base case: all events placed
+    if (n === events.length) {
+      return day;
+    }
+
+    //determine all of the valid places an event could start
+    var earliestStart = Math.max(userData.dayStart, events[n].startTime);
+    var latestStart = Math.min(userData.dayEnd, events[n].endTime) - events[n].duration;
+
+  };
 
 
   return {
     makeDay: makeDay,
     checkDayLength: checkDayLength,
-    checkEachEvent: checkEachEvent
+    checkEachEvent: checkEachEvent,
+    findSolution: findSolution
   };
 })
