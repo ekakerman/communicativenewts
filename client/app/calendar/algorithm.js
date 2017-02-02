@@ -55,6 +55,16 @@ angular.module('app.factory', [])
     return day;
   };
 
+  var removeEvent = function(day, event) {
+    day = day.map(function(timeBlock, index, array) {
+      if (timeBlock.event && timeBlock.event.id === event.id) {
+        timeBlock.event = undefined;
+      }
+      return timeBlock;
+    });
+  return day;
+};
+
 
   return {
     makeDay: makeDay,
