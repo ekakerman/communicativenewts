@@ -29,7 +29,7 @@ angular.module('app.factory', [])
 
   var checkEachEvent = function(events) {
 
-    //make sure the events are individually physically possible
+    //make sure the events are all individually physically possible
     var validTimes = events.reduce(function(valid, event) {
       if (valid === false) {
         return false;
@@ -42,6 +42,17 @@ angular.module('app.factory', [])
     }, true);
 
     return validTimes;
+  };
+
+  var insertEvent = function(day, startTime, event) {
+    for (var j = startTime * 2; j < (startTime + event.duration) * 2; j++) {
+      if (day[j].event) {
+        return false;
+      } else {
+        day[j].event = event;
+      }
+    }
+    return day;
   };
 
 
