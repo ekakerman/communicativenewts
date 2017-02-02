@@ -1,7 +1,7 @@
-console.log('made it to confirm.js');
+console.log('Confirm.js Loaded.');
 
 angular.module('app.confirm', [])
-  .controller('confirmCtrl', function($scope, Tasks) {
+  .controller('confirmCtrl', function($scope, $location, Tasks) {
 
     // Grab task list saved in Tasks factory
     $scope.getTasks = function() {
@@ -13,5 +13,15 @@ angular.module('app.confirm', [])
     };
 
     $scope.getTasks();
+
+    // Add events in list to calendar
+    $scope.addToCalendar = function() {
+      Tasks.sendTaskList($scope.events);
+      $scope.calendarView();
+    };
+
+    $scope.calendarView = function() {
+      $location.path('/calendar');
+    };
 
   });

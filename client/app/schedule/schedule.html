@@ -1,44 +1,95 @@
-<div>
+<div class="margin">
 
-  <div>Make Schedule View</div><br />
+  <!-- Task Scheduler -->
+  <div class="s-12 m-12 l-6">
+    <h2 class="text-uppercase text-strong margin-bottom-30">Task Scheduler</h2>
+    <div class="float-left">
+    </div>
+    <div class="margin-bottom">
+      <!-- <h4 class="text-strong margin-bottom-0">New Task</h4> -->
 
-  <div>Tasks to Rollover Here</div><br />
+      <form class="customform">
+        <div class="line">
+          <div class="margin">
+            <div class="s-12">
 
-  <form novalidate class="schedule-form">
+              <input name="task" class="required name border-radius" placeholder="New Task Summary" title="New Task" type="text" ng-model="event.task" />
 
-    <label>Task: <input type="text" ng-model="event.name" /></label><br />
+            </div>
+            <div class="s-12 m-12 l-4">
 
-    <label for="startTime">Earliest Start Time: </label>
-      <select name="startTime" ng-model="event.start">
-        <option ng-repeat="time in timeOptions" value="{{time.name}}">{{time.name}}</option>
-      </select><br />
+              <label for="startTime">Earliest Start Time</label>
+              <select class="required" name="startTime" ng-model="event.startTime">
+                <option ng-repeat="time in timeOptions" value="{{time.val}}">{{time.opt}}</option>
+              </select>
 
-    <label for="endTime">Latest End Time: </label>
-      <select name="endTime" ng-model="event.end">
-        <option ng-repeat="time in timeOptions" value="{{time.name}}">{{time.name}}</option>
-      </select><br />
+            </div>
+            <div class="s-12 m-12 l-4">
 
-    <label for="taskDuration">Duration: </label>
-      <select name="taskDuration" ng-model="event.duration">
-        <option ng-repeat="duration in durationOptions" value="{{duration.name}}">{{duration.name}}</option>
-      </select><br />
+              <label for="endTime">Latest End Time</label>
+              <select class="required" name="endTime" ng-model="event.endTime">
+                <option ng-repeat="time in timeOptions" value="{{time.val}}">{{time.opt}}</option>
+              </select>
 
-    Priority: <label><input type="radio" ng-model="event.priority" value="low" />Low</label>
-    <label><input type="radio" ng-model="event.priority" value="medium" />Medium</label>
-    <label><input type="radio" ng-model="event.priority" value="high" />High</label><br />
+            </div>
+            <div class="s-12 m-12 l-4">
 
-    <input type="submit" ng-click="addTask()" value="Add Task" />
-    <input type="button" ng-click="resetForm()" value="Reset" />
-  </form><br />
+              <label for="taskDuration">Task Duration</label>
+              <select class="required" name="taskDuration" ng-model="event.duration">
+                <option ng-repeat="duration in durationOptions" value="{{duration.val}}">{{duration.opt}}</option>
+              </select>
 
-  <div>
-    Current Tasks to Add
-    <ul>
-      <li ng-repeat="task in events">{{task.name}} / {{task.priority}} priority</li>
-    </ul>
+            </div>
+            <div class="s-12 m-12 l-4">
+
+              <label><input type="radio" ng-model="event.priority" value="low" />Low</label>
+
+            </div>
+            <div class="s-12 m-12 l-4">
+
+              <label><input type="radio" ng-model="event.priority" value="medium" />Medium</label>
+
+            </div>
+            <div class="s-12 m-12 l-4">
+
+              <label><input type="radio" ng-model="event.priority" value="high" />High</label>
+
+            </div>
+            <div class="s-12 m-12 l-4"><input type="date" class="required" ng-model="date" /></div>
+
+            <div class="s-12 m-12 l-4"><button class="submit-form button background-primary border-radius text-white" type="submit" ng-click="addTask()">Add Task</button></div>
+
+            <div class="s-12 m-12 l-4"><button class="submit-form button background-primary border-radius text-white" type="button" ng-click="resetForm()">Reset Form</button></div>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="float-left">
+    </div>
+    <div class="margin-bottom">
+      <!-- <h4 class="text-strong margin-bottom-0">Tasks to Add</h4> -->
+      <table>
+        <tr>
+          <th>Task</th>
+          <th>Duration</th>
+          <th>Priority</th>
+        </tr>
+        <tr ng-repeat="task in events">
+          <td>{{task.task}}</td>
+          <td>{{task.duration}} hours</td>
+          <td>{{task.priority}}</td>
+        </tr>
+      </table>
+    </div>
+    <div class="s-12 m-12 l-6"><button class="submit-form button background-primary border-radius text-white" type="button" ng-click="makeSchedule()">Create Schedule</button></div>
+    <div class="s-12 m-12 l-6"><button class="submit-form button background-primary border-radius text-white" type="button" ng-click="redirect('/calendar')">Cancel</button></div>
   </div>
 
-  <input type="button" ng-click="makeSchedule()" value="Make Schedule" />
+  <!-- Calendar View -->
+  <div class="s-12 m-12 l-6">
+    <h2 class="text-uppercase text-strong margin-bottom-30">Calendar</h2>
 
+    <iframe ng-src="{{trustSrc(calSource)}}" style="border-width:0" width="100%" height="400" frameborder="0" scrolling="no"></iframe>
+
+  </div>
 </div>
-
