@@ -103,7 +103,6 @@ angular.module('app.factory', [])
     }
   };
 
-
   return {
     makeDay: makeDay,
     checkDayLength: checkDayLength,
