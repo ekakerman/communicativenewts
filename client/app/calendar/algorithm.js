@@ -65,7 +65,7 @@ angular.module('app.factory', [])
     return day;
   };
 
-  var findSolution = function(day, events, n, userData) {
+  var findSolution = function(day, events, userData, n) {
     //base case: all events placed
     if (n === events.length) {
       return day;
@@ -75,6 +75,22 @@ angular.module('app.factory', [])
     var earliestStart = Math.max(userData.dayStart, events[n].startTime);
     var latestStart = Math.min(userData.dayEnd, events[n].endTime) - events[n].duration;
 
+     //iterate over every possible place an event could go
+    for (var i = earliestStart; i <= latestStart; i+=0.5) {
+      //place that event in its starting place
+      var newDay = insertEvent(day, i, events[n]);
+      if (newDay) {
+        //that placement worked - on to the next!
+        var result = findSolution(newDay, events, n + 1, userData);
+        if (result) {
+          //eject from recursion
+          return result;
+        }
+      } else {
+        //that placement didn't work - remove it & try again
+        day = removeEvent(day, events[n]);
+      }
+    }
   };
 
 
