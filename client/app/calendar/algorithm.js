@@ -25,12 +25,29 @@ angular.module('app.factory', [])
 
     //make sure there's enough time in the day for all events
     return dayLength < totalTime;
-  }
+  };
 
+  var checkEachEvent = function(events) {
+
+    //make sure the events are individually physically possible
+    var validTimes = events.reduce(function(valid, event) {
+      if (valid === false) {
+        return false;
+      } else if (event.endTime - event.startTime < event.duration){
+        return false;
+      } else if (event.startTime + event.duration > userData.dayEnd || event.endTime - event.duration < userData.dayStart) {
+        return false;
+      }
+      return true;
+    }, true);
+
+    return validTimes;
+  };
 
 
   return {
     makeDay: makeDay,
-    checkDayLength: checkDayLength
+    checkDayLength: checkDayLength,
+    checkEachEvent: checkEachEvent
   };
 })
