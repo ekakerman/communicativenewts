@@ -65,7 +65,17 @@ angular.module('app.factory', [])
     return day;
   };
 
-  var findSolution = function(day, events, userData, n) {
+  var findSolution = function(events, userData, n, day) {
+
+    //establish "n" and day if not provided
+    if (n === undefined) {
+      n = 0;
+    }
+
+    if (day === undefined) {
+      day = makeDay(userData);
+    }
+
     //base case: all events placed
     if (n === events.length) {
       return day;
