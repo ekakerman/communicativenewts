@@ -1,4 +1,5 @@
 var mongoose = require('mongoose');
+var GoogleAuth = require('google-auth-library');
 var User = require('./userModel.js');
 
 
@@ -38,6 +39,15 @@ module.exports = {
       console.log(req.body, 'UPDATED a user on the database');
 
       //need to update here.
+    });
+  }
+
+  authorize: function() {
+    var auth = new GoogleAuth;
+    var client = new auth.OAuth2(CLIENT_ID, '', '');
+    client.verifyIdToken(token, CLIENT_ID, function(e, login) {
+      var payload = login.getPayload();
+      var userid = payload['sub'];
     });
   }
 
