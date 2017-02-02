@@ -1,0 +1,44 @@
+<div>
+
+  <div>Make Schedule View</div><br />
+
+  <div>Tasks to Rollover Here</div><br />
+
+  <form novalidate class="schedule-form">
+
+    <label>Task: <input type="text" ng-model="event.name" /></label><br />
+
+    <label for="startTime">Earliest Start Time: </label>
+      <select name="startTime" ng-model="event.start">
+        <option ng-repeat="time in timeOptions" value="{{time.name}}">{{time.name}}</option>
+      </select><br />
+
+    <label for="endTime">Latest End Time: </label>
+      <select name="endTime" ng-model="event.end">
+        <option ng-repeat="time in timeOptions" value="{{time.name}}">{{time.name}}</option>
+      </select><br />
+
+    <label for="taskDuration">Duration: </label>
+      <select name="taskDuration" ng-model="event.duration">
+        <option ng-repeat="duration in durationOptions" value="{{duration.name}}">{{duration.name}}</option>
+      </select><br />
+
+    Priority: <label><input type="radio" ng-model="event.priority" value="low" />Low</label>
+    <label><input type="radio" ng-model="event.priority" value="medium" />Medium</label>
+    <label><input type="radio" ng-model="event.priority" value="high" />High</label><br />
+
+    <input type="submit" ng-click="addTask()" value="Add Task" />
+    <input type="button" ng-click="resetForm()" value="Reset" />
+  </form><br />
+
+  <div>
+    Current Tasks to Add
+    <ul>
+      <li ng-repeat="task in events">{{task.name}} / {{task.priority}} priority</li>
+    </ul>
+  </div>
+
+  <input type="button" ng-click="makeSchedule()" value="Make Schedule" />
+
+</div>
+
