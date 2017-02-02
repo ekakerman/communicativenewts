@@ -2,7 +2,7 @@ angular.module('app.factory', [])
 
 .factory('Algorithm', function () {
 
-  var makeDay = function(start, end) {
+  var makeDay = function(userData) {
     var day = [];
     for (var i = userData.dayStart; i <= userData.dayEnd; i += 0.5) {
       day[i * 2] = {
@@ -12,10 +12,25 @@ angular.module('app.factory', [])
     return day;
   };
 
+  var checkDayLength = function(events, userData) {
+
+    //check the total duration of all events
+    var totalTime = events.reduce(function(sum, event) {
+      sum += event.duration;
+      return sum;
+    }, 0);
+
+    //sum the duration of the day
+    var dayLength = userData.dayEnd - userData.dayStart;
+
+    //make sure there's enough time in the day for all events
+    return dayLength < totalTime;
+  }
+
 
 
   return {
-    makeDay: makeDay;
-
+    makeDay: makeDay,
+    checkDayLength: checkDayLength
   };
 })
