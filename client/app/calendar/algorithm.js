@@ -1,16 +1,6 @@
-console.log('Algorithm.js Loaded.');
-
-angular.module('app.algorithm', [])
+angular.module('app.factory', [])
 
 .factory('Algorithm', function () {
-
-  var checkEvent = function(event) {
-    if (event.endTime - event.startTime < event.duration) {
-      return false;
-    }
-    return true;
-  };
-
 
   var makeDay = function(userData) {
     var day = [];
@@ -35,6 +25,23 @@ angular.module('app.algorithm', [])
 
     //make sure there's enough time in the day for all events
     return dayLength < totalTime;
+  };
+
+  var checkEachEvent = function(events) {
+
+    //make sure the events are all individually physically possible
+    var validTimes = events.reduce(function(valid, event) {
+      if (valid === false) {
+        return false;
+      } else if (event.endTime - event.startTime < event.duration){
+        return false;
+      } else if (event.startTime + event.duration > userData.dayEnd || event.endTime - event.duration < userData.dayStart) {
+        return false;
+      }
+      return true;
+    }, true);
+
+    return validTimes;
   };
 
   var insertEvent = function(day, startTime, event) {
