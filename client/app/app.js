@@ -1,6 +1,6 @@
 console.log('App.js Loaded.');
 
-angular.module('app', ['app.login', 'app.calendar', 'app.schedule', 'app.confirm', 'app.services', 'ngRoute'])
+angular.module('app', ['app.login', 'app.calendar', 'app.schedule', 'app.confirm', 'app.services', 'app.algorithm', 'ngRoute'])
   .config(function($routeProvider) {
     $routeProvider
       .when('/', {

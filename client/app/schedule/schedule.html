@@ -8,18 +8,18 @@
     <div class="margin-bottom">
       <!-- <h4 class="text-strong margin-bottom-0">New Task</h4> -->
 
-      <form class="customform">
+      <form name="scheduler" class="customform">
         <div class="line">
           <div class="margin">
             <div class="s-12">
 
-              <input name="task" class="required name border-radius" placeholder="New Task Summary" title="New Task" type="text" ng-model="event.task" />
+              <input required name="task" class="required name border-radius" placeholder="New Task Summary" title="New Task" type="text" ng-model="event.task" />
 
             </div>
             <div class="s-12 m-12 l-4">
 
               <label for="startTime">Earliest Start Time</label>
-              <select class="required" name="startTime" ng-model="event.startTime">
+              <select required class="required" name="startTime" ng-model="event.startTime">
                 <option ng-repeat="time in timeOptions" value="{{time.val}}">{{time.opt}}</option>
               </select>
 
@@ -27,7 +27,7 @@
             <div class="s-12 m-12 l-4">
 
               <label for="endTime">Latest End Time</label>
-              <select class="required" name="endTime" ng-model="event.endTime">
+              <select required class="required" name="endTime" ng-model="event.endTime">
                 <option ng-repeat="time in timeOptions" value="{{time.val}}">{{time.opt}}</option>
               </select>
 
@@ -35,7 +35,7 @@
             <div class="s-12 m-12 l-4">
 
               <label for="taskDuration">Task Duration</label>
-              <select class="required" name="taskDuration" ng-model="event.duration">
+              <select required class="required" name="taskDuration" ng-model="event.duration">
                 <option ng-repeat="duration in durationOptions" value="{{duration.val}}">{{duration.opt}}</option>
               </select>
 
@@ -55,11 +55,13 @@
               <label><input type="radio" ng-model="event.priority" value="high" />High</label>
 
             </div>
-            <div class="s-12 m-12 l-4"><input type="date" class="required" ng-model="date" /></div>
 
-            <div class="s-12 m-12 l-4"><button class="submit-form button background-primary border-radius text-white" type="submit" ng-click="addTask()">Add Task</button></div>
+            <div class="s-12" ng-show="invalidTimes">***  END TIME MUST COME AFTER START TIME  ***</div>
 
-            <div class="s-12 m-12 l-4"><button class="submit-form button background-primary border-radius text-white" type="button" ng-click="resetForm()">Reset Form</button></div>
+            <div class="s-12 m-12 l-6"><button class="submit-form button background-primary border-radius text-white" type="submit" ng-click="addTask()" ng-disabled="scheduler.$invalid">Add Task</button></div>
+
+            <div class="s-12 m-12 l-6"><button class="submit-form button background-primary border-radius text-white" type="button" ng-click="resetForm()">Reset Form</button></div>
+
           </div>
         </div>
       </form>
@@ -67,7 +69,7 @@
     <div class="float-left">
     </div>
     <div class="margin-bottom">
-      <!-- <h4 class="text-strong margin-bottom-0">Tasks to Add</h4> -->
+
       <table>
         <tr>
           <th>Task</th>
@@ -80,9 +82,30 @@
           <td>{{task.priority}}</td>
         </tr>
       </table>
+
+      <div ng-if="!events.length">---  No Tasks to Display  ---</div>
+
     </div>
-    <div class="s-12 m-12 l-6"><button class="submit-form button background-primary border-radius text-white" type="button" ng-click="makeSchedule()">Create Schedule</button></div>
-    <div class="s-12 m-12 l-6"><button class="submit-form button background-primary border-radius text-white" type="button" ng-click="redirect('/calendar')">Cancel</button></div>
+    <hr>
+
+    <form name="date-picker" class="customform">
+    <div class="margin">
+
+      <div class="s-12">
+        <label for="date-maker">Day to Schedule Tasks  </label>
+        <input type="date" name="date-maker" required ng-model="date" class="required border-radius" />
+      </div>
+
+    </div>
+
+    <div class="margin margin-top-15">
+
+      <div class="s-12 m-12 l-6"><button class="submit-form button background-primary border-radius text-white" type="button" ng-click="makeSchedule()" ng-disabled="!date">Preview Schedule</button></div>
+
+      <div class="s-12 m-12 l-6"><button class="submit-form button background-primary border-radius text-white" type="button" ng-click="redirect('/calendar')">Cancel</button></div>
+
+    </div>
+    </form>
   </div>
 
   <!-- Calendar View -->
