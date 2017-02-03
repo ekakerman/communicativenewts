@@ -1,27 +1,49 @@
 console.log('Confirm.js Loaded.');
 
 angular.module('app.confirm', [])
-  .controller('confirmCtrl', function($scope, $location, Tasks) {
+  .controller('confirmCtrl', function($scope, $location, Tasks, Algorithm) {
 
-    // Grab task list saved in Tasks factory
-    $scope.getTasks = function() {
-      // reset old events
-      $scope.events = [];
-      // get new task list
-      $scope.events = Tasks.getTasks();
-      console.log('Getting task list:', $scope.events);
+    // Grab saved user data
+    $scope.userData = Tasks.getUserData();
+
+    // Unsorted events array
+    $scope.rawEvents = Tasks.getTasks();
+
+    // Sort events by time
+    $scope.sortSchedule = function() {
+      return Algorithm.makeSchedule($scope.rawEvents);
     };
 
-    $scope.getTasks();
+    // Grab task list saved in Tasks factory
+    $scope.displaySchedule = function() {
+      $scope.events = $scope.rawEvents;
+      console.log('Getting task list:', $scope.events);
+
+      // *** UNCOMMENT WHEN ALGORITHM CONNECTED ***
+
+      // var sortedSchedule = $scope.sortSchedule();
+      // $scope.events = Algorithm.displaySchedule(sortedSchedule);
+    };
+
+    $scope.displaySchedule();
 
     // Add events in list to calendar
     $scope.addToCalendar = function() {
+      // Add to stored list in Tasks
       Tasks.sendTaskList($scope.events);
-      $scope.calendarView();
+      $scope.redirect('/calendar');
+
+      // *** UNCOMMENT WHEN ALGORITHM CONNECTED ***
+
+      // var apiEvents = Algorithm.makeAPI($scope.sortSchedule(), $scope.userData);
+      // apiEvents.forEach(function(event) {
+      // SEND TO API
+      // });
+
     };
 
-    $scope.calendarView = function() {
-      $location.path('/calendar');
+    $scope.redirect = function(page) {
+      $location.path(page);
     };
 
   });
