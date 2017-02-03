@@ -5,20 +5,14 @@
   <table>
     <tr>
       <th>Task</th>
-      <th>Priority</th>
-      <th>Start</th>
-      <th>End</th>
-      <th>Duration</th>
+      <th>Scheduled Time</th>
     </tr>
     <tr ng-repeat="event in events">
       <td>{{event.task}}</td>
-      <td>{{event.priority}}</td>
-      <td>{{event.startTime}}</td>
-      <td>{{event.endTime}}</td>
-      <td>{{event.duration}}</td>
+      <td>{{event.time}}</td>
     </tr>
   </table>
 
 </div>
 <div class="s-12 m-12 l-6"><button class="submit-form button background-primary border-radius text-white" type="button" ng-click="addToCalendar()">Add to Calendar</button></div>
-<div class="s-12 m-12 l-6"><button class="submit-form button background-primary border-radius text-white" type="button" ng-click="calendarView()">Cancel</button></div>
+<div class="s-12 m-12 l-6"><button class="submit-form button background-primary border-radius text-white" type="button" ng-click="redirect('/calendar')">Cancel</button></div>

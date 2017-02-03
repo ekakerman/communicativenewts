@@ -4,43 +4,46 @@ angular.module('app.services', [])
 
 .factory('Tasks', function ($http) {
 
+  // User data to be populated on login
+  var userData = {};
+
+  // Array of all tasks to populate calendar view
+  var allTasks = [];
+
   // Events array to be set and retrieved with helpers below
-  var events = [];
+  var tasks = [];
 
-  // Helper to access events array
+  var setUserData = function(data) {
+    userData = data;
+  };
+
+  var getUserData = function() {
+    return userData;
+  };
+
+  // Helper to access tasks array
   var getTasks = function() {
-    return events;
+    return tasks;
   };
 
-  // Helper to set events array
+  // Helper to set tasks array
   var setTasks = function(eventsList) {
-    events = eventsList;
+    tasks = eventsList;
   };
 
-  // Request saved tasks from database
+  // Grab tasks from allTasks
   var populateTaskList = function() {
-    return $http({
-      method: 'GET',
-      url: '/api/fetchTasks'
-    })
-    .then(function(res) {
-      return res.data;
-    });
+    return allTasks;
   };
 
-  // Send new task list to API endpoint
+  // Add tasks to allTasks
   var sendTaskList = function(taskList) {
-    return $http({
-      method: 'POST',
-      url: '/api/submitTasks',
-      data: taskList
-    })
-    .then(function(res) {
-      return res;
-    });
+    allTasks.concat(taskList);
   };
 
   return {
+    setUserData: setUserData,
+    getUserData: getUserData,
     getTasks: getTasks,
     setTasks: setTasks,
     populateTaskList: populateTaskList,
