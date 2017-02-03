@@ -8,21 +8,21 @@
     <p>Google Calendar API Quickstart</p>
 
     <!--Add buttons to initiate auth sequence and sign out-->
-    <button id="authorize-button" style="display: none;">Authorize</button>
+    <button id="authorize-button" style="display: none;">Sign In</button>
     <button id="signout-button" style="display: none;">Sign Out</button>
 
     <pre id="content"></pre>
 
     <script type="text/javascript">
       // Client ID and API key from the Developer Console
-      var CLIENT_ID = '141003443952-lfs0e3027rjuoohvssgdi20mh6kg9rpm.apps.googleusercontent.com';
+      var CLIENT_ID = '141003443952-li7skbk81f020j44lvoj4h8d2ae4ihh1.apps.googleusercontent.com';
 
       // Array of API discovery doc URLs for APIs used by the quickstart
       var DISCOVERY_DOCS = ["https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest"];
 
       // Authorization scopes required by the API; multiple scopes can be
       // included, separated by spaces.
-      var SCOPES = "https://www.googleapis.com/auth/calendar";
+      var SCOPES = "https://www.googleapis.com/auth/calendar.readonly";
 
       var authorizeButton = document.getElementById('authorize-button');
       var signoutButton = document.getElementById('signout-button');
