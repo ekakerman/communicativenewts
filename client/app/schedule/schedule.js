@@ -1,7 +1,10 @@
 console.log('Schedule.js Loaded.');
 
 angular.module('app.schedule', ['ngSanitize'])
-  .controller('scheduleCtrl', function($scope, $location, $sce, Tasks) {
+  .controller('scheduleCtrl', function($scope, $location, $sce, Tasks, Algorithm) {
+
+    // Get user data from services.js
+    $scope.userData = Tasks.getUserData();
 
     // Options for 'Start Time/End Time' drop down selectors
     $scope.timeOptions = [
@@ -96,31 +99,49 @@ angular.module('app.schedule', ['ngSanitize'])
     // Array of all task objects to be added
     $scope.events = [];
 
-    // Format date and time to Google API specifications
-    $scope.formatDateTime = function(date, time) {
-      var datetime;
-      date = date.toISOString();
-
-      return datetime;
-    };
+    // Used for showing error message on invalid task
+    $scope.invalidTimes = false;
 
     // Adds current event to events array
     $scope.addTask = function() {
-      console.log('Adding task:', $scope.event);
+      console.log('Adding task...');
+
       $scope.events.push($scope.event);
-      // Reset event
       $scope.event = {};
+
+      // *** UNCOMMENT WHEN ALGORITHM CONNECTED ***
+
+      // Check for valid event times
+      // $scope.invalidTimes = false;
+      // var valid = Algorithm.checkEvent($scope.event);
+
+      // if (valid) {
+      //   $scope.events.push($scope.event);
+      //   console.log('Success:', $scope.event);
+      //   $scope.event = {};
+      // } else {
+      //   console.log('invalid event times');
+      //   $scope.invalidTimes = true;
+      // }
     };
 
     // Remove all form data
     $scope.resetForm = function() {
+      console.log('Date/Time Format:', $scope.date.toISOString());
       $scope.event = {};
+    };
+
+    $scope.addIdProp = function(taskList) {
+      taskList.forEach(function(task, index) {
+        task.id = index;
+      });
     };
 
     // Send events array to Confirm Schedule View
     $scope.makeSchedule = function() {
+      $scope.addIdProp($scope.events);
+      $scope.addUserDate();
       Tasks.setTasks($scope.events);
-      // Redirect to confirm calendar view
       $location.path('/confirm');
     };
 
@@ -134,11 +155,15 @@ angular.module('app.schedule', ['ngSanitize'])
       $location.path(page);
     };
 
-    // User settings retrieved at login
-    $scope.username = "communicativenewts";
-    $scope.timezone = "America/New_York";
+    // Set the date property on the userData object
+    $scope.addUserDate = function() {
+      var date = $scope.date.toISOString();
+      $scope.userData.date = date;
+      Tasks.setUserData($scope.userData);
+      console.log('User Data Updated:', $scope.userData);
+    };
 
     // source for iframe used in calendar.html
-    $scope.calSource = "https://calendar.google.com/calendar/embed?showPrint=0&mode=AGENDA&src=" + $scope.username + "%40gmail.com&ctz=" + $scope.timezone;
+    $scope.calSource = "https://calendar.google.com/calendar/embed?showPrint=0&mode=AGENDA&src=" + $scope.userData.user + "%40gmail.com&ctz=" + $scope.userData.tz;
 
   });
