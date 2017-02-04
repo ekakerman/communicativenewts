@@ -41,13 +41,24 @@ angular.module('app.services', [])
     allTasks.concat(taskList);
   };
 
+  var addEvent = function(event) {
+    return $http({
+      method: 'POST',
+      url: 'https://www.googleapis.com/calendar/v3/calendars/primary/events',
+      data: event
+    }).then(function() {
+      console.log('Event Sent.');
+    });
+  };
+
   return {
     setUserData: setUserData,
     getUserData: getUserData,
     getTasks: getTasks,
     setTasks: setTasks,
     populateTaskList: populateTaskList,
-    sendTaskList: sendTaskList
+    sendTaskList: sendTaskList,
+    addEvent: addEvent
   };
 
 });
