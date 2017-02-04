@@ -11,8 +11,13 @@ angular.module('app.algorithm', [])
     return true;
   };
 
-
   var makeSchedule = function(events) {
+
+    events.forEach(function(value, index, array) {
+      value.startTime = +value.startTime;
+      value.endTime = +value.endTime;
+      value.duration = +value.duration;
+    })
 
     //calculate time day starts
     var dayStart = events.reduce(function(earliest, event, index, array) {
@@ -235,6 +240,10 @@ angular.module('app.algorithm', [])
       } else {
         data.timeNum = timeNum;
       }
+
+      var today = new Date();
+      var offset = today.getTimezoneOffset() / 60;
+      userData.offset = offset;
 
       //the JS getTimezoneOffset method returns negative of difference between UTC and local time
       if (userData.offset < 0) {
