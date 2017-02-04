@@ -133,6 +133,27 @@ angular.module('app.algorithm', [])
       return true;
     });
 
+    //condense multiple events, updating to accurate startTime & endTime
+    madeSchedule = madeSchedule.reduce(function(schedule, value, index, array) {
+      //first instance of an event - update startTime
+      if (schedule.length === 0 || array[index - 1].event.id !== value.event.id) {
+        value.event.startTime = value.timeBlock;
+        value = value.event;
+        schedule.push(value);
+        return schedule;
+      }
+
+      //last instance of an event - update endTime
+      if (!array[index + 1] || (array[index + 1] && array[index + 1].event.id !== value.event.id)) {
+        schedule[schedule.length - 1].endTime = value.timeBlock + 0.5;
+        return schedule;
+      }
+
+      return schedule;
+    }, []);
+
+    return madeSchedule;
+
     //sample result of makeSchedule
     // var events = [
     //   {
