@@ -189,6 +189,13 @@ angular.module('app.algorithm', [])
         data.timeNum = timeNum + 12;
       }
 
+      if (timeNum > 12.5) {
+        data.timeNum = data.timeNum - 12;
+        data.meridiem = ' pm';
+      } else {
+        data.meridiem = ' am';
+      }
+
       return Math.floor(data.timeNum) + data.minutes + data.meridiem;
     };
 
