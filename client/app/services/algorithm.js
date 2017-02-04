@@ -220,6 +220,26 @@ angular.module('app.algorithm', [])
 
   var makeAPI = function(schedule, userData) {
 
+    var makeDateTime = function(timeNum) {
+      var data = {};
+
+      if (timeNum % 1 === 0) {
+        data.minutes = ':00';
+      } else {
+        data.minutes = ':30';
+      }
+
+      timeNum = Math.floor(timeNum);
+      if (timeNum < 10) {
+        data.timeNum = '0' + timeNum;
+      } else {
+        data.timeNum = timeNum;
+      }
+
+      return userData.date.slice(0, 10) + 'T' + data.timeNum + data.minutes + ':00';
+    };
+
+
     schedule = schedule.map(function(event, index, array) {
       return {
         summary: event.task,
