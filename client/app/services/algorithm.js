@@ -236,7 +236,28 @@ angular.module('app.algorithm', [])
         data.timeNum = timeNum;
       }
 
-      return userData.date.slice(0, 10) + 'T' + data.timeNum + data.minutes + ':00';
+      //the JS getTimezoneOffset method returns negative of difference between UTC and local time
+      if (userData.offset < 0) {
+        data.offsetSign = '+';
+      } else {
+        data.offsetSign = '-';
+      }
+
+      //account for fractional offsets
+      if (userData.offset % 1 === 0) {
+        data.offsetMinutes = ':00';
+      } else {
+        var minutes = (userData.offset - Math.floor(userData.offset)) * 60;
+        data.offsetMinutes = ':' + minutes;
+      }
+
+      if (userData.offset < 10) {
+        data.offsetHour = '0' + Math.floor(userData.offset);
+      } else {
+        data.offsetHour = Math.floor(userData.offset);
+      }
+
+      return userData.date.slice(0, 10) + 'T' + data.timeNum + data.minutes + ':00' + data.offsetSign + data.offsetHour + data.offsetMinutes;
     };
 
 
