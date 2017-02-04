@@ -14,6 +14,24 @@ angular.module('app.algorithm', [])
 
   var makeSchedule = function(events) {
 
+    //calculate time day starts
+    var dayStart = events.reduce(function(earliest, event, index, array) {
+      if (event.startTime < earliest) {
+        return event.startTime;
+      }
+      return earliest;
+    }, events[0].startTime);
+
+    //calculate time day ends
+    var dayEnd = events.reduce(function(latest, event, index, array) {
+      if (event.startTime > latest) {
+        return event.latest;
+      }
+      return earliest;
+    }, events[0].endTime);
+
+
+
 
     var makeDay = function(userData) {
       var day = [];
