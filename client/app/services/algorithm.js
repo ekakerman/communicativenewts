@@ -172,8 +172,21 @@ angular.module('app.algorithm', [])
 
   };
 
+  var displaySchedule = function(schedule) {
+
+    schedule = schedule.map(function(event, index, array) {
+      return {
+        task: event.task,
+        time: prettyTime(event.startTime) + ' - ' + prettyTime(event.endTime)
+      };
+    });
+
+    return schedule;
+  };
+
   return {
     checkEvent: checkEvent,
-    makeSchedule: makeSchedule
+    makeSchedule: makeSchedule,
+    displaySchedule: displaySchedule
   };
 })
