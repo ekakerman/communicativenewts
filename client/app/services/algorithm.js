@@ -260,7 +260,6 @@ angular.module('app.algorithm', [])
       return userData.date.slice(0, 10) + 'T' + data.timeNum + data.minutes + ':00' + data.offsetSign + data.offsetHour + data.offsetMinutes;
     };
 
-
     schedule = schedule.map(function(event, index, array) {
       return {
         summary: event.task,
@@ -274,6 +273,29 @@ angular.module('app.algorithm', [])
     });
 
     return schedule;
+
+    // sample userData & result of the makeAPI function:
+    // var userData = {
+    //   offset: 7,
+    //   date: '2018-05-28T00:00:00'
+    // };
+    // googleSchedule = [
+    //   { task: 'A',
+    //     time: '7:00 am - 8:30 am' },
+    //   { task: 'B',
+    //     time: '11:00 am - 2:00 pm' }
+    // ];
+
+    // scheduleAPI: [
+    //   { summary: 'A',
+    //     start: { dateTime: '2018-05-28T07:00:00-07:00' },
+    //     end: { dateTime: '2018-05-28T08:30:00-07:00' }
+    //   },
+    //   { summary: 'B',
+    //     start: { dateTime: '2018-05-28T11:00:00-07:00' },
+    //     end: { dateTime: '2018-05-28T14:00:00-07:00' }
+    //   }
+    // ];
 
   };
 
