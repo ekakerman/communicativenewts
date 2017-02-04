@@ -218,9 +218,28 @@ angular.module('app.algorithm', [])
 
   };
 
+  var makeAPI = function(schedule, userData) {
+
+    schedule = schedule.map(function(event, index, array) {
+      return {
+        summary: event.task,
+        start: {
+          dateTime: makeDateTime(event.startTime)
+        },
+        end:{
+          dateTime: makeDateTime(event.endTime)
+        }
+      };
+    });
+
+    return schedule;
+
+  };
+
   return {
     checkEvent: checkEvent,
     makeSchedule: makeSchedule,
-    displaySchedule: displaySchedule
+    displaySchedule: displaySchedule,
+    makeAPI: makeAPI
   };
 })
