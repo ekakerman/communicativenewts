@@ -154,18 +154,20 @@ angular.module('app.algorithm', [])
 
     return madeSchedule;
 
-    //sample result of makeSchedule
-    // var events = [
-    //   {
+    // sample result of the makeSchedule function:
+    // madeSchedule = [
+    //   { id: 0,
     //     task: 'A',
-    //     startTime: 9,
-    //     endTime: 10
-    //   },
-    //   {
+    //     startTime: 7,
+    //     endTime: 8.5,
+    //     duration: 1.5,
+    //     priority: 'high' },
+    //   { id: 1,
     //     task: 'B',
-    //     startTime: 13,
-    //     endTime: 15
-    //   }
+    //     startTime: 9,
+    //     endTime: 10,
+    //     duration: 1,
+    //     priority: 'low' }
     // ];
 
   };
