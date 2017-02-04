@@ -106,23 +106,23 @@ angular.module('app.schedule', ['ngSanitize'])
     $scope.addTask = function() {
       console.log('Adding task...');
 
-      $scope.events.push($scope.event);
-      $scope.event = {};
+      // $scope.events.push($scope.event);
+      // $scope.event = {};
 
       // *** UNCOMMENT WHEN ALGORITHM CONNECTED ***
 
       // Check for valid event times
-      // $scope.invalidTimes = false;
-      // var valid = Algorithm.checkEvent($scope.event);
+      $scope.invalidTimes = false;
+      var valid = Algorithm.checkEvent($scope.event);
 
-      // if (valid) {
-      //   $scope.events.push($scope.event);
-      //   console.log('Success:', $scope.event);
-      //   $scope.event = {};
-      // } else {
-      //   console.log('invalid event times');
-      //   $scope.invalidTimes = true;
-      // }
+      if (valid) {
+        $scope.events.push($scope.event);
+        console.log('Success:', $scope.event);
+        $scope.event = {};
+      } else {
+        console.log('invalid event times');
+        $scope.invalidTimes = true;
+      }
     };
 
     // Remove all form data

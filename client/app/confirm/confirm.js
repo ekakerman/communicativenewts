@@ -9,20 +9,17 @@ angular.module('app.confirm', [])
     // Unsorted events array
     $scope.rawEvents = Tasks.getTasks();
 
-    // Sort events by time
-    $scope.sortSchedule = function() {
-      return Algorithm.makeSchedule($scope.rawEvents);
-    };
-
     // Grab task list saved in Tasks factory
     $scope.displaySchedule = function() {
-      $scope.events = $scope.rawEvents;
-      console.log('Getting task list:', $scope.events);
 
       // *** UNCOMMENT WHEN ALGORITHM CONNECTED ***
 
-      // var sortedSchedule = $scope.sortSchedule();
-      // $scope.events = Algorithm.displaySchedule(sortedSchedule);
+      console.log('Making Schedule', $scope.rawEvents);
+      var sortedSchedule = Algorithm.makeSchedule($scope.rawEvents);
+      console.log('Sorted Schedule:', sortedSchedule);
+      $scope.events = Algorithm.displaySchedule(sortedSchedule);
+      // $scope.events = $scope.rawEvents;
+      console.log('Getting task list:', $scope.events);
     };
 
     $scope.displaySchedule();
