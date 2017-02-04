@@ -164,9 +164,9 @@ angular.module('app.algorithm', [])
     //     priority: 'high' },
     //   { id: 1,
     //     task: 'B',
-    //     startTime: 9,
-    //     endTime: 10,
-    //     duration: 1,
+    //     startTime: 11,
+    //     endTime: 14,
+    //     duration: 3,
     //     priority: 'low' }
     // ];
 
@@ -207,6 +207,15 @@ angular.module('app.algorithm', [])
     });
 
     return schedule;
+
+    // sample result of the displaySchedule function:
+    // prettySchedule = [
+    //   { task: 'A',
+    //     time: '7:00 am - 8:30 am' },
+    //   { task: 'B',
+    //     time: '11:00 am - 2:00 pm' }
+    // ];
+
   };
 
   return {
