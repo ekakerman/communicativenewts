@@ -124,7 +124,14 @@ angular.module('app.algorithm', [])
     }
 
     var madeSchedule = findSchedule(events);
-    return madeSchedule;
+
+    //remove empty slots
+    madeSchedule = madeSchedule.filter(function(value, index, array) {
+      if (!value || !value.event) {
+        return false;
+      }
+      return true;
+    });
 
     //sample result of makeSchedule
     // var events = [
