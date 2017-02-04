@@ -38,4 +38,8 @@ angular.module('app.calendar', ['ngSanitize'])
     // Populate task list when app loads
     $scope.populateTaskList();
 
+    $scope.addEvent = function() {
+
+    };
+
   });
