@@ -179,6 +179,16 @@ angular.module('app.algorithm', [])
         timeNum: timeNum
       };
 
+      if (timeNum % 1 === 0) {
+        data.minutes = ':00';
+      } else {
+        data.minutes = ':30';
+      }
+
+      if (timeNum < 1) {
+        data.timeNum = timeNum + 12;
+      }
+
       return Math.floor(data.timeNum) + data.minutes + data.meridiem;
     };
 
