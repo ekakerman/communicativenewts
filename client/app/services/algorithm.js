@@ -25,17 +25,15 @@ angular.module('app.algorithm', [])
     //calculate time day ends
     var dayEnd = events.reduce(function(latest, event, index, array) {
       if (event.startTime > latest) {
-        return event.latest;
+        return event.endTime;
       }
-      return earliest;
+      return latest;
     }, events[0].endTime);
 
-
-
-
-    var makeDay = function(userData) {
+    //use start and end times to make array representing the full day
+    var makeDay = function(dayStart, dayEnd) {
       var day = [];
-      for (var i = userData.dayStart; i <= userData.dayEnd; i += 0.5) {
+      for (var i = dayStart; i <= dayEnd; i += 0.5) {
         day[i * 2] = {
           timeBlock: i
         };
@@ -43,7 +41,8 @@ angular.module('app.algorithm', [])
       return day;
     };
 
-    var checkDayLength = function(events, userData) {
+    //check total time requirement of all events
+    var checkDayLength = function(events) {
 
       //check the total duration of all events
       var totalTime = events.reduce(function(sum, event) {
@@ -52,10 +51,10 @@ angular.module('app.algorithm', [])
       }, 0);
 
       //sum the duration of the day
-      var dayLength = userData.dayEnd - userData.dayStart;
+      var dayLength = dayEnd - dayStart;
 
       //make sure there's enough time in the day for all events
-      return dayLength < totalTime;
+      return dayLength > totalTime;
     };
 
     var insertEvent = function(day, startTime, event) {
@@ -79,7 +78,7 @@ angular.module('app.algorithm', [])
       return day;
     };
 
-    var findSolution = function(events, userData, n, day) {
+    var findSchedule = function(events, day, n) {
 
       //establish "n" and day if not provided
       if (n === undefined) {
@@ -87,7 +86,7 @@ angular.module('app.algorithm', [])
       }
 
       if (day === undefined) {
-        day = makeDay(userData);
+        day = makeDay(dayStart, dayEnd);
       }
 
       //base case: all events placed
@@ -95,17 +94,17 @@ angular.module('app.algorithm', [])
         return day;
       }
 
-      //determine all of the valid places an event could start
-      var earliestStart = Math.max(userData.dayStart, events[n].startTime);
-      var latestStart = Math.min(userData.dayEnd, events[n].endTime) - events[n].duration;
+      //determine all of the valid times an event could possibly start
+      var earliestStart = events[n].startTime;
+      var latestStart = events[n].endTime - events[n].duration;
 
-       //iterate over every possible place an event could go
-      for (var i = earliestStart; i <= latestStart; i+=0.5) {
+      //iterate over every possible place an event could go
+      for (var i = earliestStart; i <= latestStart; i += 0.5) {
         //place that event in its starting place
         var newDay = insertEvent(day, i, events[n]);
         if (newDay) {
           //that placement worked - on to the next!
-          var result = findSolution(newDay, events, n + 1, userData);
+          var result = findSchedule(events, newDay, n + 1);
           if (result) {
             //eject from recursion
             return result;
@@ -115,32 +114,36 @@ angular.module('app.algorithm', [])
           day = removeEvent(day, events[n]);
         }
       }
-
-
+      //accept defeat
+      return false;
     };
 
+    var validLength = checkDayLength(events);
+    if (!validLength) {
+      return false;
+    }
 
-  }
+    var madeSchedule = findSchedule(events);
+    return madeSchedule;
 
-  //sample result of makeSchedule
-  // var events = [
-  //   {
-  //     task: 'A',
-  //     startTime: 9,
-  //     endTime: 10
-  //   },
-  //   {
-  //     task: 'B',
-  //     startTime: 13,
-  //     endTime: 15
-  //   }
-  // ];
+    //sample result of makeSchedule
+    // var events = [
+    //   {
+    //     task: 'A',
+    //     startTime: 9,
+    //     endTime: 10
+    //   },
+    //   {
+    //     task: 'B',
+    //     startTime: 13,
+    //     endTime: 15
+    //   }
+    // ];
 
+  };
 
   return {
-    makeDay: makeDay,
-    checkDayLength: checkDayLength,
-    checkEachEvent: checkEachEvent,
-    findSolution: findSolution
+    checkEvent: checkEvent,
+    makeSchedule: makeSchedule
   };
 })
