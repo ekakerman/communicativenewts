@@ -174,6 +174,14 @@ angular.module('app.algorithm', [])
 
   var displaySchedule = function(schedule) {
 
+    var prettyTime = function(timeNum) {
+      var data = {
+        timeNum: timeNum
+      };
+
+      return Math.floor(data.timeNum) + data.minutes + data.meridiem;
+    };
+
     schedule = schedule.map(function(event, index, array) {
       return {
         task: event.task,
