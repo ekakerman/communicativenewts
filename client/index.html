@@ -26,14 +26,14 @@
       <nav class="background-white background-primary-hightlight">
         <div class="line">
           <div class="s-12 l-2">
-            <a href="index.html" class="logo"><img src="img/metis.png" alt=""></a>
+            <a class="logo"><img src="img/metis.png" alt=""></a>
           </div>
           <div class="top-nav s-12 l-10">
             <p class="nav-text"></p>
             <ul class="right chevron">
 
-              <li><button id="authorize-button" style="display: hide;" class="g-signin2" data-onsuccess="onSignIn">Sign In</button></li>
-              <li><button href="/" id="signout-button" style="display: hide;" class="g-signout2" onclick="signOut();">Sign Out</button></li>
+              <li><div id="authorize-button" style="display: none;" class="g-signin2" data-onsuccess="onSignIn">Sign In</div></li>
+              <li><button href="/" id="signout-button" style="display: none;" class="g-signout2" onclick="signOut();">Sign Out</button></li>
 
             </ul>
           </div>
@@ -41,28 +41,20 @@
       </nav>
     </header>
 
-      <!-- Section 1 -->
+      <!-- Green Bar Section-->
       <section class="background-primary text-center">
         <div class="line">
           <div class="s-12 m-10 l-8 center">
             <h2 class="headline text-thin text-s-size-30">Metis</h2>
-
-
-
-                <!-- <pre id="content"></pre> -->
-
-
           </div>
         </div>
       </section>
 
-      <!-- Section 2 -->
+      <!-- ng-view Section -->
       <section class="section background-white">
         <div class="full-width text-center">
           <div class="line">
-
             <div ng-view></div>
-
           </div>
         </div>
       </section>
@@ -140,14 +132,14 @@
        *  appropriately. After a sign-in, the API is called.
        */
       function updateSigninStatus(isSignedIn) {
-        if (isSignedIn) {
-          authorizeButton.style.display = 'none';
-          signoutButton.style.display = 'block';
-          window.location.replace("/#!/calendar")
-        } else {
-          authorizeButton.style.display = 'block';
-          signoutButton.style.display = 'none';
-        }
+        // if (isSignedIn) {
+        //   authorizeButton.style.display = 'none';
+        //   signoutButton.style.display = 'block';
+        //   window.location.replace("/#!/calendar");
+        // } else {
+        //   authorizeButton.style.display = 'block';
+        //   signoutButton.style.display = 'none';
+        // }
       }
 
       /**
@@ -180,16 +172,13 @@
       function onSignIn(googleUser) {
         // Useful data for your client-side scripts:
         var profile = googleUser.getBasicProfile();
-        console.log("ID: " + profile.getId()); // Don't send this directly to your server!
-        console.log('Full Name: ' + profile.getName());
-        console.log('Given Name: ' + profile.getGivenName());
-        console.log('Family Name: ' + profile.getFamilyName());
-        console.log("Image URL: " + profile.getImageUrl());
-        console.log("Email: " + profile.getEmail());
+        console.log(profile);
+        authorizeButton.style.display = 'none';
+        signoutButton.style.display = 'block';
+        window.location.replace("/#!/calendar");
 
-        // The ID token you need to pass to your backend:
+        // The ID token that can be used on your backend:
         var id_token = googleUser.getAuthResponse().id_token;
-        console.log("ID Token: " + id_token);
       };
 
       function signOut() {
@@ -197,13 +186,17 @@
         auth2.signOut().then(function () {
           console.log('User signed out.');
         });
+        signoutButton.style.display = 'none';
+        authorizeButton.style.display = 'block';
+        window.location.replace("/#!/");
       }
-
+      authorizeButton.style.display = 'block';
     </script>
 
     <script async defer src="https://apis.google.com/js/api.js"
       onload="this.onload=function(){};handleClientLoad()"
       onreadystatechange="if (this.readyState === 'complete') this.onload()">
+
     </script>
 
 
