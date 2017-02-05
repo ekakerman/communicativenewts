@@ -157,12 +157,38 @@ angular.module('app.schedule', ['ngSanitize'])
       $location.path(page);
     };
 
+    // Add 1 day to account for selector glitch that selects day prior
+    var addDay = function(dateString) {
+      // dateString in UTC format
+      if (dateString.indexOf(',') !== -1) {
+        var index = dateString.indexOf(',');
+        var prefix = dateString.slice(0, index + 2);
+        var num = dateString.slice(index + 2, index + 4);
+        var suffix = dateString.slice(index + 4);
+        num = +num + 1;
+        var newDate = prefix + num.toString() + suffix;
+      } else {
+        // dateString in ISO format
+        index = dateString.lastIndexOf('-');
+        prefix = dateString.slice(0, index + 1);
+        num = dateString.slice(index + 1, index + 3);
+        suffix = dateString.slice(index + 3);
+        num = (+num + 1).toString();
+        if (num.length === 1) {
+          num = '0' + num;
+        }
+        newDate = prefix + num + suffix;
+        console.log('New Date:', newDate);
+      }
+      return newDate;
+    };
+
     // Set the date property on the userData object
     $scope.addUserDate = function() {
       var date = $scope.date.toISOString();
       var longDate = $scope.date.toUTCString();
-      $scope.userData.date = date;
-      $scope.userData.longDate = longDate;
+      $scope.userData.date = addDay(date);
+      $scope.userData.longDate = addDay(longDate);
       Tasks.setUserData($scope.userData);
       console.log('User Data Updated:', $scope.userData);
     };

@@ -47,14 +47,14 @@ angular.module('app.confirm', [])
 
         console.log('Sending event to Google:', event);
 
-        var request = gapi.client.calendar.events.insert({
-          'calendarId': 'primary',
-          'resource': event
-        });
+        // var request = gapi.client.calendar.events.insert({
+        //   'calendarId': 'primary',
+        //   'resource': event
+        // });
 
-        request.execute(function(event) {
-          console.log('Event Created:', event.htmlLink);
-        });
+        // request.execute(function(event) {
+        //   console.log('Event Created:', event.htmlLink);
+        // });
       });
 
       $scope.redirect('/calendar');

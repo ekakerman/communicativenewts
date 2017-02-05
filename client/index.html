@@ -160,12 +160,13 @@
       function onSignIn(googleUser) {
         // Useful data for your client-side scripts:
         window.profile = googleUser.getBasicProfile();
-        console.log(window.profile);
+        console.log('User Profile:', window.profile);
         authorizeButton.style.display = 'none';
         signoutButton.style.display = 'block';
         window.location.replace("/#!/calendar");
         // The ID token that can be used on your backend:
-        var id_token = googleUser.getAuthResponse().id_token;
+        window.id_token = googleUser.getAuthResponse().id_token;
+        console.log('User ID Token:', window.id_token);
       };
       function signOut() {
         var auth2 = gapi.auth2.getAuthInstance();
