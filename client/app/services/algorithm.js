@@ -13,11 +13,15 @@ angular.module('app.algorithm', [])
 
   var makeSchedule = function(events) {
 
+    console.log('Start makeSchedule:', events);
+
     events.forEach(function(value, index, array) {
       value.startTime = +value.startTime;
       value.endTime = +value.endTime;
       value.duration = +value.duration;
     })
+
+    console.log('After forEach:', events);
 
     //calculate time day starts
     var dayStart = events.reduce(function(earliest, event, index, array) {
@@ -27,6 +31,8 @@ angular.module('app.algorithm', [])
       return earliest;
     }, events[0].startTime);
 
+    console.log('Day Start:', dayStart);
+
     //calculate time day ends
     var dayEnd = events.reduce(function(latest, event, index, array) {
       if (event.startTime > latest) {
@@ -35,8 +41,11 @@ angular.module('app.algorithm', [])
       return latest;
     }, events[0].endTime);
 
+    console.log('Day End:', dayEnd);
+
     //use start and end times to make array representing the full day
     var makeDay = function(dayStart, dayEnd) {
+      console.log('Making Day (47)');
       var day = [];
       for (var i = dayStart; i <= dayEnd; i += 0.5) {
         day[i * 2] = {
@@ -48,7 +57,7 @@ angular.module('app.algorithm', [])
 
     //check total time requirement of all events
     var checkDayLength = function(events) {
-
+      console.log('Checking Day Length (59)');
       //check the total duration of all events
       var totalTime = events.reduce(function(sum, event) {
         sum += event.duration;
@@ -58,13 +67,16 @@ angular.module('app.algorithm', [])
       //sum the duration of the day
       var dayLength = dayEnd - dayStart;
 
+      console.log('Enough Time?', dayLength > totalTime);
       //make sure there's enough time in the day for all events
       return dayLength > totalTime;
     };
 
     var insertEvent = function(day, startTime, event) {
+      console.log('Inserting Event (74)');
       for (var j = startTime * 2; j < (startTime + event.duration) * 2; j++) {
         if (day[j].event) {
+          console.log('Cannot insert event? FALSE (78)');
           return false;
         } else {
           day[j].event = event;
@@ -74,6 +86,7 @@ angular.module('app.algorithm', [])
     };
 
     var removeEvent = function(day, event) {
+      console.log('Removing Event (88)');
       day = day.map(function(timeBlock, index, array) {
         if (timeBlock.event && timeBlock.event.id === event.id) {
           timeBlock.event = undefined;
@@ -84,6 +97,10 @@ angular.module('app.algorithm', [])
     };
 
     var findSchedule = function(events, day, n) {
+      console.log('Finding Schedule (99)');
+      console.log('Events currently:', events);
+      console.log('Day currently:', day);
+      console.log('n currently:', n);
 
       //establish "n" and day if not provided
       if (n === undefined) {
@@ -103,10 +120,14 @@ angular.module('app.algorithm', [])
       var earliestStart = events[n].startTime;
       var latestStart = events[n].endTime - events[n].duration;
 
+      console.log('Earliest Start:', earliestStart);
+      console.log('Latest Start:', latestStart);
+
       //iterate over every possible place an event could go
       for (var i = earliestStart; i <= latestStart; i += 0.5) {
         //place that event in its starting place
         var newDay = insertEvent(day, i, events[n]);
+        console.log('Current New Day:', newDay);
         if (newDay) {
           //that placement worked - on to the next!
           var result = findSchedule(events, newDay, n + 1);
@@ -128,7 +149,11 @@ angular.module('app.algorithm', [])
       return false;
     }
 
+    console.log('Valid Length? (147)', validLength);
+
     var madeSchedule = findSchedule(events);
+
+    console.log('Schedule Made (154)', madeSchedule);
 
     //remove empty slots
     madeSchedule = madeSchedule.filter(function(value, index, array) {
@@ -137,6 +162,8 @@ angular.module('app.algorithm', [])
       }
       return true;
     });
+
+    console.log('Removed empty slots; new schedule:', madeSchedule);
 
     //condense multiple events, updating to accurate startTime & endTime
     madeSchedule = madeSchedule.reduce(function(schedule, value, index, array) {
@@ -156,6 +183,8 @@ angular.module('app.algorithm', [])
 
       return schedule;
     }, []);
+
+    console.log('Reduced schedule (169) Final Schedule:', madeSchedule);
 
     return madeSchedule;
 

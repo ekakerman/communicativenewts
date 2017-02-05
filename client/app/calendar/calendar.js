@@ -5,6 +5,12 @@ angular.module('app.calendar', ['ngSanitize'])
 
     var tz = jstz.determine();
 
+    $scope.makeUserName = function() {
+      var email = window.profile.U3;
+      var index = email.indexOf('@');
+      return email.slice(0, index);
+    };
+
     // Use to store tasks from database
     $scope.tasks = [];
 
@@ -12,7 +18,7 @@ angular.module('app.calendar', ['ngSanitize'])
     // Move to Services.js
     // User settings retrieved at login
     $scope.userData = {
-      user: 'communicativenewts',
+      user: $scope.makeUserName(),
       tz: tz.name()
     };
 

@@ -93,7 +93,7 @@
       var DISCOVERY_DOCS = ["https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest"];
       // Authorization scopes required by the API; multiple scopes can be
       // included, separated by spaces.
-      var SCOPES = "https://www.googleapis.com/auth/calendar.readonly";
+      var SCOPES = "https://www.googleapis.com/auth/calendar.readonly https://www.googleapis.com/auth/calendar";
       var authorizeButton = document.getElementById('authorize-button');
       var signoutButton = document.getElementById('signout-button');
       /**
@@ -159,8 +159,8 @@
       }
       function onSignIn(googleUser) {
         // Useful data for your client-side scripts:
-        var profile = googleUser.getBasicProfile();
-        console.log(profile);
+        window.profile = googleUser.getBasicProfile();
+        console.log(window.profile);
         authorizeButton.style.display = 'none';
         signoutButton.style.display = 'block';
         window.location.replace("/#!/calendar");
@@ -174,12 +174,12 @@
         });
         signoutButton.style.display = 'none';
         authorizeButton.style.display = 'block';
-        window.location.replace("/#!/");
+        window.location.replace("/");
       }
       authorizeButton.style.display = 'block';
     </script>
 
-    <script async defer src="https://apis.google.com/js/api.js"
+    <script defer src="https://apis.google.com/js/api.js"
       onload="this.onload=function(){};handleClientLoad()"
       onreadystatechange="if (this.readyState === 'complete') this.onload()">
     </script>
