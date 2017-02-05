@@ -3,6 +3,8 @@ console.log('Calendar.js Loaded.');
 angular.module('app.calendar', ['ngSanitize'])
   .controller('calendarCtrl', function($scope, $sce, $location, Tasks) {
 
+    var tz = jstz.determine();
+
     // Use to store tasks from database
     $scope.tasks = [];
 
@@ -11,7 +13,7 @@ angular.module('app.calendar', ['ngSanitize'])
     // User settings retrieved at login
     $scope.userData = {
       user: 'communicativenewts',
-      tz: 'America/New_York'
+      tz: tz.name()
     };
 
     Tasks.setUserData($scope.userData);
