@@ -38,7 +38,7 @@ angular.module('app.services', [])
 
   // Add tasks to allTasks
   var sendTaskList = function(taskList) {
-    allTasks.concat(taskList);
+    allTasks = allTasks.concat(taskList);
   };
 
   return {

@@ -11,8 +11,7 @@ angular.module('app.calendar', ['ngSanitize'])
     // User settings retrieved at login
     $scope.userData = {
       user: 'communicativenewts',
-      tz: 'America/New_York',
-      offset: -5
+      tz: 'America/New_York'
     };
 
     Tasks.setUserData($scope.userData);
@@ -33,13 +32,10 @@ angular.module('app.calendar', ['ngSanitize'])
     // Get tasks saved in database
     $scope.populateTaskList = function() {
       $scope.tasks = Tasks.populateTaskList();
+      console.log('Task List Populated:', $scope.tasks);
     };
 
     // Populate task list when app loads
     $scope.populateTaskList();
-
-    $scope.addEvent = function() {
-
-    };
 
   });
