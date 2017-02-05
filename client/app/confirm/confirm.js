@@ -9,16 +9,20 @@ angular.module('app.confirm', [])
     // Unsorted events array
     $scope.rawEvents = Tasks.getTasks();
 
+    // Sorted schedule array for use with functions
+    $scope.sorted = Algorithm.makeSchedule($scope.rawEvents);
+
+    $scope.formatDate = function() {
+      var date = $scope.userData.longDate;
+      var dateIndex = date.indexOf(':');
+      var formatted = date.slice(0, dateIndex - 3);
+      return formatted;
+    };
+
     // Grab task list saved in Tasks factory
     $scope.displaySchedule = function() {
-
-      // *** UNCOMMENT WHEN ALGORITHM CONNECTED ***
-
-      console.log('Making Schedule', $scope.rawEvents);
-      var sortedSchedule = Algorithm.makeSchedule($scope.rawEvents);
-      console.log('Sorted Schedule:', sortedSchedule);
-      $scope.events = Algorithm.displaySchedule(sortedSchedule);
-      // $scope.events = $scope.rawEvents;
+      $scope.events = Algorithm.displaySchedule($scope.sorted);
+      $scope.date = $scope.formatDate();
       console.log('Getting task list:', $scope.events);
     };
 
@@ -26,17 +30,37 @@ angular.module('app.confirm', [])
 
     // Add events in list to calendar
     $scope.addToCalendar = function() {
-      // Add to stored list in Tasks
+
+      $scope.events.forEach(function(event) {
+        event.date = $scope.formatDate();
+      });
+
       Tasks.sendTaskList($scope.events);
-      $scope.redirect('/calendar');
+      console.log('Sent to Factory:', $scope.events);
 
       // *** UNCOMMENT WHEN ALGORITHM CONNECTED ***
 
-      // var apiEvents = Algorithm.makeAPI($scope.sortSchedule(), $scope.userData);
+      // console.log('Sorted Schedule:', $scope.sorted);
+      // console.log('User Data:', $scope.userData);
+
+      // var apiEvents = Algorithm.makeAPI($scope.sorted, $scope.userData);
+
+      // Send each event to the API
       // apiEvents.forEach(function(event) {
-      // SEND TO API
+
+      //   console.log('Sending event to Google:', event);
+
+      //   var request = gapi.client.calendar.events.insert({
+      //     'calendarId': 'primary',
+      //     'resource': event
+      //   });
+
+      //   request.execute(function(event) {
+      //     console.log('Event Created:', event.htmlLink);
+      //   });
       // });
 
+      $scope.redirect('/calendar');
     };
 
     $scope.redirect = function(page) {

@@ -102,16 +102,12 @@ angular.module('app.schedule', ['ngSanitize'])
     // Used for showing error message on invalid task
     $scope.invalidTimes = false;
 
+    $scope.invalidSchedule = false;
+
     // Adds current event to events array
     $scope.addTask = function() {
       console.log('Adding task...');
 
-      // $scope.events.push($scope.event);
-      // $scope.event = {};
-
-      // *** UNCOMMENT WHEN ALGORITHM CONNECTED ***
-
-      // Check for valid event times
       $scope.invalidTimes = false;
       var valid = Algorithm.checkEvent($scope.event);
 
@@ -127,10 +123,10 @@ angular.module('app.schedule', ['ngSanitize'])
 
     // Remove all form data
     $scope.resetForm = function() {
-      console.log('Date/Time Format:', $scope.date.toISOString());
       $scope.event = {};
     };
 
+    // Adds ID property to events when making schedule
     $scope.addIdProp = function(taskList) {
       taskList.forEach(function(task, index) {
         task.id = index;
@@ -141,8 +137,14 @@ angular.module('app.schedule', ['ngSanitize'])
     $scope.makeSchedule = function() {
       $scope.addIdProp($scope.events);
       $scope.addUserDate();
-      Tasks.setTasks($scope.events);
-      $location.path('/confirm');
+
+      if (Algorithm.makeSchedule($scope.events) === false) {
+        // No Schedule can be created
+        $scope.invalidSchedule = true;
+      } else {
+        Tasks.setTasks($scope.events);
+        $location.path('/confirm');
+      }
     };
 
     // Force iframe to use dynamically created link as trusted src
@@ -158,7 +160,9 @@ angular.module('app.schedule', ['ngSanitize'])
     // Set the date property on the userData object
     $scope.addUserDate = function() {
       var date = $scope.date.toISOString();
+      var longDate = $scope.date.toUTCString();
       $scope.userData.date = date;
+      $scope.userData.longDate = longDate;
       Tasks.setUserData($scope.userData);
       console.log('User Data Updated:', $scope.userData);
     };
