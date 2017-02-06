@@ -4,6 +4,7 @@ angular.module('app.algorithm', [])
 
 .factory('Algorithm', function () {
 
+  //make sure each event is individually possible
   var checkEvent = function(event) {
     if (event.endTime - event.startTime < event.duration) {
       return false;
@@ -13,13 +14,14 @@ angular.module('app.algorithm', [])
 
   var makeSchedule = function(events) {
 
+    //convert each numerical string to a number
     events.forEach(function(value, index, array) {
       value.startTime = +value.startTime;
       value.endTime = +value.endTime;
       value.duration = +value.duration;
     })
 
-    //calculate time day starts
+    //calculate time day starts by finding earliest start time
     var dayStart = events.reduce(function(earliest, event, index, array) {
       if (event.startTime < earliest) {
         return event.startTime;
@@ -27,7 +29,7 @@ angular.module('app.algorithm', [])
       return earliest;
     }, events[0].startTime);
 
-    //calculate time day ends
+    //calculate time day ends by finding latest end time
     var dayEnd = events.reduce(function(latest, event, index, array) {
       if (event.startTime > latest) {
         return event.endTime;
@@ -38,7 +40,9 @@ angular.module('app.algorithm', [])
     //use start and end times to make array representing the full day
     var makeDay = function(dayStart, dayEnd) {
       var day = [];
+      //increase by .5 to account for half-hours
       for (var i = dayStart; i <= dayEnd; i += 0.5) {
+        //each day is an object
         day[i * 2] = {
           timeBlock: i
         };
@@ -62,6 +66,7 @@ angular.module('app.algorithm', [])
       return dayLength > totalTime;
     };
 
+    //insert a specific event in the day array
     var insertEvent = function(day, startTime, event) {
       for (var j = startTime * 2; j < (startTime + event.duration) * 2; j++) {
         if (day[j].event) {
@@ -73,6 +78,7 @@ angular.module('app.algorithm', [])
       return day;
     };
 
+    //remove a specific event in the day array
     var removeEvent = function(day, event) {
       day = day.map(function(timeBlock, index, array) {
         if (timeBlock.event && timeBlock.event.id === event.id) {
@@ -85,11 +91,12 @@ angular.module('app.algorithm', [])
 
     var findSchedule = function(events, day, n) {
 
-      //establish "n" and day if not provided
+      //establish "n" if not provided
       if (n === undefined) {
         n = 0;
       }
 
+      //establish day array if not provided
       if (day === undefined) {
         day = makeDay(dayStart, dayEnd);
       }
@@ -123,14 +130,16 @@ angular.module('app.algorithm', [])
       return false;
     };
 
+    //confirm that all of the events physically fit into the day
     var validLength = checkDayLength(events);
     if (!validLength) {
       return false;
     }
 
+    //make the actual schedule
     var madeSchedule = findSchedule(events);
 
-    //remove empty slots
+    //reformat schedule by removing empty slots
     madeSchedule = madeSchedule.filter(function(value, index, array) {
       if (!value || !value.event) {
         return false;
@@ -138,8 +147,9 @@ angular.module('app.algorithm', [])
       return true;
     });
 
-    //condense multiple events, updating to accurate startTime & endTime
+    //reformat schedule by condensing multiple events, updating to accurate startTime & endTime
     madeSchedule = madeSchedule.reduce(function(schedule, value, index, array) {
+
       //first instance of an event - update startTime
       if (schedule.length === 0 || array[index - 1].event.id !== value.event.id) {
         value.event.startTime = value.timeBlock;
@@ -177,8 +187,10 @@ angular.module('app.algorithm', [])
 
   };
 
+  //make a displayable version of the numerical schedule
   var displaySchedule = function(schedule) {
 
+    //convert a numerical time to pretty time format
     var prettyTime = function(timeNum) {
       var data = {
         timeNum: timeNum
@@ -204,6 +216,7 @@ angular.module('app.algorithm', [])
       return Math.floor(data.timeNum) + data.minutes + data.meridiem;
     };
 
+    //convert each event to pretty time format
     schedule = schedule.map(function(event, index, array) {
       return {
         task: event.task,
@@ -223,8 +236,10 @@ angular.module('app.algorithm', [])
 
   };
 
+  //make an API-able version of the numerical schedule
   var makeAPI = function(schedule, userData) {
 
+    //convert a numerical time to a standard internet datetime
     var makeDateTime = function(timeNum) {
       var data = {};
 
@@ -269,6 +284,7 @@ angular.module('app.algorithm', [])
       return userData.date.slice(0, 10) + 'T' + data.timeNum + data.minutes + ':00' + data.offsetSign + data.offsetHour + data.offsetMinutes;
     };
 
+    //convert each event to standard datetime format
     schedule = schedule.map(function(event, index, array) {
       return {
         summary: event.task,
