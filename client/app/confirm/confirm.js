@@ -47,29 +47,24 @@ angular.module('app.confirm', [])
 
         console.log('Sending event to Google:', event);
 
-        // var request = gapi.client.calendar.events.insert({
-        //   'calendarId': 'primary',
-        //   'resource': event
-        // });
+        Tasks.sendToGoogle(event);
 
-        // request.execute(function(event) {
-        //   console.log('Event Created:', event.htmlLink);
-        // });
       });
 
-      var testEvent = {
-        "summary": "Sent from App!",
-        "start": {
-          "dateTime": "2017-02-07T01:30:00-07:00"
-        },
-        "end": {
-          "dateTime": "2017-02-07T05:30:00-07:00"
-        }
-      };
+      // // *** TEST EVENT / WILL POST TO CALENDAR ***
+      // var testEvent = {
+      //   "summary": "App is Working!",
+      //   "start": {
+      //     "dateTime": "2017-02-06T14:30:00-07:00"
+      //   },
+      //   "end": {
+      //     "dateTime": "2017-02-06T16:30:00-07:00"
+      //   }
+      // };
 
-      console.log('Actually sending this:', testEvent);
+      // console.log('Actually sending this:', testEvent);
 
-      Tasks.sendToGoogle(testEvent);
+      // Tasks.sendToGoogle(testEvent);
 
       $scope.redirect('/calendar');
     };

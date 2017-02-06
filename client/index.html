@@ -164,14 +164,16 @@
         authorizeButton.style.display = 'none';
         signoutButton.style.display = 'block';
 
+        // OAuth2 authentication object
+        // Added to window for easy access throughout app
         window.authResponse = googleUser.getAuthResponse();
         console.log('Auth Response:', window.authResponse);
 
         // Access Token for OAuth2
-        window.access_token = authResponse.access_token;
+        var access_token = authResponse.access_token;
 
         // The ID token that can be used on your backend:
-        window.id_token = authResponse.id_token;
+        var id_token = authResponse.id_token;
 
         window.location.replace("/#!/calendar");
       };

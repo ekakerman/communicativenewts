@@ -13,10 +13,12 @@ angular.module('app.services', [])
   // Events array to be set and retrieved with helpers below
   var tasks = [];
 
+  // Helper to set userData object
   var setUserData = function(data) {
     userData = data;
   };
 
+  // Helper to access userData object
   var getUserData = function() {
     return userData;
   };
