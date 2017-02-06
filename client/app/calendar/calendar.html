@@ -1,7 +1,32 @@
-<div>
-  <div>Calendar View</div>
+<div class="margin">
 
-  <iframe ng-src="{{trustSrc(calSource)}}" style="border-width:0" width="800" height="600" frameborder="0" scrolling="no"></iframe>
+  <!-- Unfinished Tasks -->
+  <div class="s-12 m-12 l-6">
+    <h2 class="text-uppercase text-strong margin-bottom-30">Unfinished Tasks</h2>
+    <div class="margin-bottom">
+      <div class="margin text-center">
+        <div ng-if="!tasks.length">---  No Tasks to Display  ---</div>
 
-  <div>{{calSource}}</div>
+        <!-- Render Tasks from Database Here -->
+        <div class="s-12 margin-bottom" ng-repeat="task in tasks">
+          <div class="padding block-bordered border-radius">
+            <h2 class="text-thin">{{task.task}}</h2>
+            <p class="margin-bottom-0">{{task.date}}</p>
+            <p class="margin-bottom-15">{{task.time}}</p>
+            <a class="button border-radius background-primary text-size-12 text-white text-strong" href="/#!/calendar">FINISHED</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Calendar View -->
+  <div class="s-12 m-12 l-6">
+    <h2 class="text-uppercase text-strong margin-bottom-30">Calendar</h2>
+
+    <iframe ng-src="{{trustSrc(calSource)}}" style="border-width:0" width="100%" height="400" frameborder="0" scrolling="no"></iframe>
+
+    <div class="s-12 margin-top-15"><button class="submit-form button background-primary border-radius text-white" type="button" ng-click="redirect('/schedule')">Create New Schedule</button></div>
+  </div>
 </div>

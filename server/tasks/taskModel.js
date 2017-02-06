@@ -2,6 +2,7 @@ var mongoose = require('mongoose');
 var User = require('../users/userModel.js');
 var Schema = mongoose.Schema;
 
+//currently unused - tasks not saved to database
 var TaskSchema = new mongoose.Schema({
   task: String,
   date_due: Date,

@@ -1,0 +1,20 @@
+<h2 class="text-size-30">Confirm Schedule</h2>
+
+<div class="margin-bottom">
+
+  <table>
+    <tr>
+      <th>Task</th>
+      <th>Date</th>
+      <th>Scheduled Time</th>
+    </tr>
+    <tr ng-repeat="event in events">
+      <td>{{event.task}}</td>
+      <td>{{date}}</td>
+      <td>{{event.time}}</td>
+    </tr>
+  </table>
+
+</div>
+<div class="s-12 m-12 l-6"><button class="submit-form button background-primary border-radius text-white" type="button" ng-click="addToCalendar()">Add to Calendar</button></div>
+<div class="s-12 m-12 l-6"><button class="submit-form button background-primary border-radius text-white" type="button" ng-click="redirect('/calendar')">Cancel</button></div>

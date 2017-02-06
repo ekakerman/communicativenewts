@@ -1,18 +1,199 @@
 <!DOCTYPE html>
-<html>
-<head>
-  <title>Metis</title>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.1/angular.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.1/angular-route.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-sanitize/1.6.1/angular-sanitize.js"></script>
-</head>
-<body ng-app="app">
-  <div>METIS</div>
-  <div ng-view>
-  </div>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Metis</title>
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/icons.css">
+    <link rel="stylesheet" href="css/responsee.css">
+    <link rel="stylesheet" href="owl-carousel/owl.carousel.css">
+    <link rel="stylesheet" href="owl-carousel/owl.theme.css">
+    <link rel="stylesheet" href="css/template-style.css">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,700,800&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+    <script type="text/javascript" src="js/jquery-1.8.3.min.js"></script>
+    <script type="text/javascript" src="js/jquery-ui.min.js"></script>
+    <script src="jstimezonedetect/dist/jstz.js"></script>
+    <meta name="google-signin-scope" content="profile email">
+    <meta name="google-signin-client_id" content="141003443952-li7skbk81f020j44lvoj4h8d2ae4ihh1.apps.googleusercontent.com">
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+  </head>
 
-  <script src="./app/app.js"></script>
-  <script src="./app/login/login.js"></script>
-  <script src="./app/calendar/calendar.js"></script>
-</body>
+  <body class="size-1140" ng-app="app">
+
+    <!-- Top Navigation -->
+    <header role="banner">
+      <nav class="background-white background-primary-hightlight">
+        <div class="line">
+          <div class="s-12 l-2">
+            <a class="logo"><img src="img/metis.png" alt=""></a>
+          </div>
+          <div class="top-nav s-12 l-10">
+            <p class="nav-text"></p>
+            <ul class="right chevron">
+
+              <li><div id="authorize-button" style="display: none;" class="g-signin2" data-onsuccess="onSignIn">Sign In</div></li>
+              <li><button href="/" id="signout-button" style="display: none;" class="g-signout2" onclick="signOut();">Sign Out</button></li>
+
+            </ul>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+      <!-- Green Bar Section-->
+      <section class="background-primary text-center">
+        <div class="line">
+          <div class="s-12 m-10 l-8 center">
+            <h2 class="headline text-thin text-s-size-30">Metis</h2>
+          </div>
+        </div>
+      </section>
+
+      <!-- ng-view Section -->
+      <section class="section background-white">
+        <div class="full-width text-center">
+          <div class="line">
+            <div ng-view></div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer>
+      <section class="padding background-dark">
+        <div class="line">
+          <div class="s-12 l-6">
+            <p class="text-size-12">Copyright 2017, Metis</p>
+          </div>
+        </div>
+      </section>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.1/angular.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.1/angular-route.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-sanitize/1.6.1/angular-sanitize.js"></script>
+    <script type="text/javascript" src="js/responsee.js"></script>
+    <script type="text/javascript" src="owl-carousel/owl.carousel.js"></script>
+    <script type="text/javascript" src="js/template-scripts.js"></script>
+    <script src="./app/app.js"></script>
+    <script src="./app/login/login.js"></script>
+    <script src="./app/calendar/calendar.js"></script>
+    <script src="./app/schedule/schedule.js"></script>
+    <script src="./app/confirm/confirm.js"></script>
+    <script src="./app/services/services.js"></script>
+    <script src="./app/services/algorithm.js"></script>
+
+
+    <script type="text/javascript">
+      // Client ID and API key from the Developer Console
+      var CLIENT_ID = '141003443952-li7skbk81f020j44lvoj4h8d2ae4ihh1.apps.googleusercontent.com';
+      // Array of API discovery doc URLs for APIs used by the quickstart
+      var DISCOVERY_DOCS = ["https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest"];
+      // Authorization scopes required by the API; multiple scopes can be
+      // included, separated by spaces.
+      var SCOPES = "https://www.googleapis.com/auth/calendar.readonly https://www.googleapis.com/auth/calendar";
+      var authorizeButton = document.getElementById('authorize-button');
+      var signoutButton = document.getElementById('signout-button');
+      /**
+       *  On load, called to load the auth2 library and API client library.
+       */
+      function handleClientLoad() {
+        gapi.load('client:auth2', initClient);
+      }
+      /**
+       *  Initializes the API client library and sets up sign-in state
+       *  listeners.
+       */
+      function initClient() {
+        gapi.client.init({
+          discoveryDocs: DISCOVERY_DOCS,
+          clientId: CLIENT_ID,
+          scope: SCOPES
+        }).then(function () {
+          // Listen for sign-in state changes.
+          gapi.auth2.getAuthInstance().isSignedIn.listen(updateSigninStatus);
+          // Handle the initial sign-in state.
+          updateSigninStatus(gapi.auth2.getAuthInstance().isSignedIn.get());
+          authorizeButton.onclick = handleAuthClick;
+          signoutButton.onclick = handleSignoutClick;
+        });
+      }
+      /**
+       *  Called when the signed in status changes, to update the UI
+       *  appropriately. After a sign-in, the API is called.
+       */
+      function updateSigninStatus(isSignedIn) {
+        // if (isSignedIn) {
+        //   authorizeButton.style.display = 'none';
+        //   signoutButton.style.display = 'block';
+        //   window.location.replace("/#!/calendar");
+        // } else {
+        //   authorizeButton.style.display = 'block';
+        //   signoutButton.style.display = 'none';
+        // }
+      }
+      /**
+       *  Sign in the user upon button click.
+       */
+      function handleAuthClick(event) {
+        gapi.auth2.getAuthInstance().signIn();
+      }
+      /**
+       *  Sign out the user upon button click.
+       */
+      function handleSignoutClick(event) {
+        gapi.auth2.getAuthInstance().signOut();
+      }
+      /**
+       * Append a pre element to the body containing the given message
+       * as its text node. Used to display the results of the API call.
+       *
+       * @param {string} message Text to be placed in pre element.
+       */
+      function appendPre(message) {
+        var pre = document.getElementById('content');
+        var textContent = document.createTextNode(message + '\n');
+        pre.appendChild(textContent);
+      }
+      function onSignIn(googleUser) {
+        // Useful data for your client-side scripts:
+        window.profile = googleUser.getBasicProfile();
+        console.log('User Profile:', window.profile);
+        authorizeButton.style.display = 'none';
+        signoutButton.style.display = 'block';
+
+        // OAuth2 authentication object
+        // Added to window for easy access throughout app
+        window.authResponse = googleUser.getAuthResponse();
+        console.log('Auth Response:', window.authResponse);
+
+        // Access Token for OAuth2
+        var access_token = authResponse.access_token;
+
+        // The ID token that can be used on your backend:
+        var id_token = authResponse.id_token;
+
+        window.location.replace("/#!/calendar");
+      };
+      function signOut() {
+        var auth2 = gapi.auth2.getAuthInstance();
+        auth2.signOut().then(function () {
+          console.log('User signed out.');
+        });
+        signoutButton.style.display = 'none';
+        authorizeButton.style.display = 'block';
+        window.location.replace("/");
+      }
+      authorizeButton.style.display = 'block';
+    </script>
+
+    <script defer src="https://apis.google.com/js/api.js"
+      onload="this.onload=function(){};handleClientLoad()"
+      onreadystatechange="if (this.readyState === 'complete') this.onload()">
+    </script>
+
+
+  </body>
 </html>

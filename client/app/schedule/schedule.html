@@ -1,0 +1,120 @@
+<div class="margin">
+
+  <!-- Task Scheduler -->
+  <div class="s-12 m-12 l-6">
+    <h2 class="text-uppercase text-strong margin-bottom-30">Task Scheduler</h2>
+    <div class="float-left">
+    </div>
+    <div class="margin-bottom">
+      <!-- <h4 class="text-strong margin-bottom-0">New Task</h4> -->
+
+      <form name="scheduler" class="customform">
+        <div class="line">
+          <div class="margin">
+            <div class="s-12">
+
+              <input required name="task" class="required name border-radius" placeholder="New Task Summary" title="New Task" type="text" ng-model="event.task" />
+
+            </div>
+            <div class="s-12 m-12 l-4">
+
+              <label for="startTime">Earliest Start Time</label>
+              <select required class="required" name="startTime" ng-model="event.startTime">
+                <option ng-repeat="time in timeOptions" value="{{time.val}}">{{time.opt}}</option>
+              </select>
+
+            </div>
+            <div class="s-12 m-12 l-4">
+
+              <label for="endTime">Latest End Time</label>
+              <select required class="required" name="endTime" ng-model="event.endTime">
+                <option ng-repeat="time in timeOptions" value="{{time.val}}">{{time.opt}}</option>
+              </select>
+
+            </div>
+            <div class="s-12 m-12 l-4">
+
+              <label for="taskDuration">Task Duration</label>
+              <select required class="required" name="taskDuration" ng-model="event.duration">
+                <option ng-repeat="duration in durationOptions" value="{{duration.val}}">{{duration.opt}}</option>
+              </select>
+
+            </div>
+            <div class="s-12 m-12 l-4">
+
+              <label><input type="radio" ng-model="event.priority" value="low" />Low</label>
+
+            </div>
+            <div class="s-12 m-12 l-4">
+
+              <label><input type="radio" ng-model="event.priority" value="medium" />Medium</label>
+
+            </div>
+            <div class="s-12 m-12 l-4">
+
+              <label><input type="radio" ng-model="event.priority" value="high" />High</label>
+
+            </div>
+
+            <div class="s-12" ng-show="invalidTimes">***  DURATION TOO LONG FOR TIME FRAME  ***</div>
+
+            <div class="s-12 m-12 l-6"><button class="submit-form button background-primary border-radius text-white" type="submit" ng-click="addTask()" ng-disabled="scheduler.$invalid">Add Task</button></div>
+
+            <div class="s-12 m-12 l-6"><button class="submit-form button background-primary border-radius text-white" type="button" ng-click="resetForm()">Reset Form</button></div>
+
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="float-left">
+    </div>
+    <div class="margin-bottom">
+
+      <table>
+        <tr>
+          <th>Task</th>
+          <th>Duration</th>
+          <th>Priority</th>
+        </tr>
+        <tr ng-repeat="task in events">
+          <td>{{task.task}}</td>
+          <td>{{task.duration}} hours</td>
+          <td>{{task.priority}}</td>
+        </tr>
+      </table>
+
+      <div ng-if="!events.length">---  No Tasks to Display  ---</div>
+
+    </div>
+    <hr>
+
+    <form name="date-picker" class="customform">
+    <div class="margin">
+
+      <div class="s-12">
+        <label for="date-maker">Day to Schedule Tasks  </label>
+        <input type="date" name="date-maker" required ng-model="date" class="required border-radius" />
+      </div>
+
+    </div>
+
+    <div class="s-12 margin-bottom-15" ng-show="invalidSchedule">***  TOO MANY EVENTS IN SAME TIME FRAME  ***</div>
+
+    <div class="margin margin-top-15">
+
+      <div class="s-12 m-12 l-6"><button class="submit-form button background-primary border-radius text-white" type="button" ng-click="makeSchedule()" ng-disabled="!date">Preview Schedule</button></div>
+
+      <div class="s-12 m-12 l-6"><button class="submit-form button background-primary border-radius text-white" type="button" ng-click="redirect('/calendar')">Cancel</button></div>
+
+    </div>
+    </form>
+  </div>
+
+  <!-- Calendar View -->
+  <div class="s-12 m-12 l-6">
+    <h2 class="text-uppercase text-strong margin-bottom-30">Calendar</h2>
+
+    <iframe ng-src="{{trustSrc(calSource)}}" style="border-width:0" width="100%" height="400" frameborder="0" scrolling="no"></iframe>
+
+  </div>
+</div>

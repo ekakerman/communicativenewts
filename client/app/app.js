@@ -1,6 +1,6 @@
-console.log('made it to app.js');
+console.log('App.js Loaded.');
 
-angular.module('app', ['app.login', 'app.calendar', 'ngRoute'])
+angular.module('app', ['app.login', 'app.calendar', 'app.schedule', 'app.confirm', 'app.services', 'app.algorithm', 'ngRoute'])
   .config(function($routeProvider) {
     $routeProvider
       .when('/', {
@@ -11,8 +11,15 @@ angular.module('app', ['app.login', 'app.calendar', 'ngRoute'])
         templateUrl: 'app/calendar/calendar.html',
         controller: 'calendarCtrl'
       })
+      .when('/schedule', {
+        templateUrl: 'app/schedule/schedule.html',
+        controller: 'scheduleCtrl'
+      })
+      .when('/confirm', {
+        templateUrl: 'app/confirm/confirm.html',
+        controller: 'confirmCtrl'
+      })
       .otherwise({
         redirectTo: '/'
       });
-
   });
