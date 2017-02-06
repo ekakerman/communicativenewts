@@ -24,24 +24,7 @@ module.exports = {
     });
   },
 
-  signin: function(req, res) {
-    mongoose.model('users', function(err, user) {
-
-
-    //singin will obviously need to be here.
-    });
-  },
-
-  update: function(req, res) {
-    mongoose.model('users', function(err, user) {
-
-      if (err) { res.send(err); }
-      console.log(req.body, 'UPDATED a user on the database');
-
-      //need to update here.
-    });
-  }
-
+  //currently unused - for expanding to back-end authentication
   authorize: function() {
     var auth = new GoogleAuth;
     var client = new auth.OAuth2(CLIENT_ID, '', '');
