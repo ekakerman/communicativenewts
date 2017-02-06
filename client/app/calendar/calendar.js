@@ -3,6 +3,14 @@ console.log('Calendar.js Loaded.');
 angular.module('app.calendar', ['ngSanitize'])
   .controller('calendarCtrl', function($scope, $sce, $location, Tasks) {
 
+    var tz = jstz.determine();
+
+    $scope.makeUserName = function() {
+      var email = window.profile.U3;
+      var index = email.indexOf('@');
+      return email.slice(0, index);
+    };
+
     // Use to store tasks from database
     $scope.tasks = [];
 
@@ -10,9 +18,8 @@ angular.module('app.calendar', ['ngSanitize'])
     // Move to Services.js
     // User settings retrieved at login
     $scope.userData = {
-      user: 'communicativenewts',
-      tz: 'America/New_York',
-      offset: -5
+      user: $scope.makeUserName(),
+      tz: tz.name()
     };
 
     Tasks.setUserData($scope.userData);
@@ -33,6 +40,7 @@ angular.module('app.calendar', ['ngSanitize'])
     // Get tasks saved in database
     $scope.populateTaskList = function() {
       $scope.tasks = Tasks.populateTaskList();
+      console.log('Task List Populated:', $scope.tasks);
     };
 
     // Populate task list when app loads

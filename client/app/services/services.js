@@ -13,10 +13,12 @@ angular.module('app.services', [])
   // Events array to be set and retrieved with helpers below
   var tasks = [];
 
+  // Helper to set userData object
   var setUserData = function(data) {
     userData = data;
   };
 
+  // Helper to access userData object
   var getUserData = function() {
     return userData;
   };
@@ -38,7 +40,26 @@ angular.module('app.services', [])
 
   // Add tasks to allTasks
   var sendTaskList = function(taskList) {
-    allTasks.concat(taskList);
+    allTasks = allTasks.concat(taskList);
+  };
+
+  // Authentication token for header of POST request
+  var auth = "Bearer " + window.authResponse.access_token;
+
+  // Send events to Google Calendar
+  var sendToGoogle = function(event) {
+    return $http({
+      method: 'POST',
+      url: 'https://www.googleapis.com/calendar/v3/calendars/primary/events',
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": auth
+      },
+      data: event
+    })
+    .then(function(res) {
+      return res;
+    });
   };
 
   return {
@@ -47,7 +68,8 @@ angular.module('app.services', [])
     getTasks: getTasks,
     setTasks: setTasks,
     populateTaskList: populateTaskList,
-    sendTaskList: sendTaskList
+    sendTaskList: sendTaskList,
+    sendToGoogle: sendToGoogle
   };
 
 });
