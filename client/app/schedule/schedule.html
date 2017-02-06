@@ -56,7 +56,7 @@
 
             </div>
 
-            <div class="s-12" ng-show="invalidTimes">***  END TIME MUST COME AFTER START TIME  ***</div>
+            <div class="s-12" ng-show="invalidTimes">***  DURATION TOO LONG FOR TIME FRAME  ***</div>
 
             <div class="s-12 m-12 l-6"><button class="submit-form button background-primary border-radius text-white" type="submit" ng-click="addTask()" ng-disabled="scheduler.$invalid">Add Task</button></div>
 
@@ -97,6 +97,8 @@
       </div>
 
     </div>
+
+    <div class="s-12 margin-bottom-15" ng-show="invalidSchedule">***  TOO MANY EVENTS IN SAME TIME FRAME  ***</div>
 
     <div class="margin margin-top-15">
 
