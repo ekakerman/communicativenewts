@@ -267,6 +267,9 @@ angular.module('app.algorithm', [])
         data.offsetSign = '-';
       }
 
+      //make a negative offset positive
+      userData.offset = Math.abs(userData.offset);
+
       //account for fractional offsets
       if (userData.offset % 1 === 0) {
         data.offsetMinutes = ':00';
@@ -275,6 +278,7 @@ angular.module('app.algorithm', [])
         data.offsetMinutes = ':' + minutes;
       }
 
+      //add a leading zero if necessary
       if (userData.offset < 10) {
         data.offsetHour = '0' + Math.floor(userData.offset);
       } else {
