@@ -57,6 +57,20 @@ angular.module('app.confirm', [])
         // });
       });
 
+      var testEvent = {
+        "summary": "Sent from App!",
+        "start": {
+          "dateTime": "2017-02-07T01:30:00-07:00"
+        },
+        "end": {
+          "dateTime": "2017-02-07T05:30:00-07:00"
+        }
+      };
+
+      console.log('Actually sending this:', testEvent);
+
+      Tasks.sendToGoogle(testEvent);
+
       $scope.redirect('/calendar');
     };
 

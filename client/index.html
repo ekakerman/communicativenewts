@@ -163,10 +163,17 @@
         console.log('User Profile:', window.profile);
         authorizeButton.style.display = 'none';
         signoutButton.style.display = 'block';
-        window.location.replace("/#!/calendar");
+
+        window.authResponse = googleUser.getAuthResponse();
+        console.log('Auth Response:', window.authResponse);
+
+        // Access Token for OAuth2
+        window.access_token = authResponse.access_token;
+
         // The ID token that can be used on your backend:
-        window.id_token = googleUser.getAuthResponse().id_token;
-        console.log('User ID Token:', window.id_token);
+        window.id_token = authResponse.id_token;
+
+        window.location.replace("/#!/calendar");
       };
       function signOut() {
         var auth2 = gapi.auth2.getAuthInstance();

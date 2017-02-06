@@ -41,13 +41,33 @@ angular.module('app.services', [])
     allTasks = allTasks.concat(taskList);
   };
 
+  // Authentication token for header of POST request
+  var auth = "Bearer " + window.authResponse.access_token;
+
+  // Send events to Google Calendar
+  var sendToGoogle = function(event) {
+    return $http({
+      method: 'POST',
+      url: 'https://www.googleapis.com/calendar/v3/calendars/primary/events',
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": auth
+      },
+      data: event
+    })
+    .then(function(res) {
+      return res;
+    });
+  };
+
   return {
     setUserData: setUserData,
     getUserData: getUserData,
     getTasks: getTasks,
     setTasks: setTasks,
     populateTaskList: populateTaskList,
-    sendTaskList: sendTaskList
+    sendTaskList: sendTaskList,
+    sendToGoogle: sendToGoogle
   };
 
 });
