@@ -5,38 +5,27 @@ var User = require('../users/userModel.js');
 
 module.exports = {
 
+  //currently unused - tasks saved only in google calendar, not in database
   newTask: function(req, res) {
     mongoose.model('tasks', function(err, user) {
 
       if (err) { res.send(err); }
-      console.log(req.body, 'NEWTASK was added to the db');
 
       var newTask = new Task({
         task: req.body.task,
-        date_due: req.body.due_date,
-        time_due: req.body.time_due,
+        start: req.body.start,
+        end: req.body.end,
         duration: req.body.duration,
         priority: req.body.priority,
         completed: req.body.completed,
-
-        // how can we access the proper user Id here?
-        // id_users: [{type: Schema.Types.ObjectId, ref: 'User'}];
+        user_id: req.body.user
       });
 
       newTask.save();
     })
   },
 
-  changeTask: function(req, res) {
-    mongoose.model('tasks', function(err, user) {
-
-      if (err) { res.send(err); }
-      console.log(req.body, 'TASK was updated/changed on the db');
-
-      //need to find a way to change/update a task here.
-    });
-  },
-
+  //currently unused
   deleteTask: function(req, res) {
     mongoose.model('tasks', function (err, user) {
       if (err) { res.send(err); }
