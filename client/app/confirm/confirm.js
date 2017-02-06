@@ -6,40 +6,67 @@ angular.module('app.confirm', [])
     // Grab saved user data
     $scope.userData = Tasks.getUserData();
 
-    // Unsorted events array
-    $scope.rawEvents = Tasks.getTasks();
+    // Previously sorted events array
+    $scope.sortedEvents = Tasks.getTasks();
 
-    // Sort events by time
-    $scope.sortSchedule = function() {
-      return Algorithm.makeSchedule($scope.rawEvents);
+    $scope.formatDate = function() {
+      var date = $scope.userData.longDate;
+      var dateIndex = date.indexOf(':');
+      var formatted = date.slice(0, dateIndex - 3);
+      return formatted;
     };
 
     // Grab task list saved in Tasks factory
     $scope.displaySchedule = function() {
-      $scope.events = $scope.rawEvents;
+      $scope.events = Algorithm.displaySchedule($scope.sortedEvents);
+      $scope.date = $scope.formatDate();
       console.log('Getting task list:', $scope.events);
-
-      // *** UNCOMMENT WHEN ALGORITHM CONNECTED ***
-
-      // var sortedSchedule = $scope.sortSchedule();
-      // $scope.events = Algorithm.displaySchedule(sortedSchedule);
     };
 
     $scope.displaySchedule();
 
     // Add events in list to calendar
     $scope.addToCalendar = function() {
-      // Add to stored list in Tasks
+
+      $scope.events.forEach(function(event) {
+        event.date = $scope.formatDate();
+      });
+
       Tasks.sendTaskList($scope.events);
-      $scope.redirect('/calendar');
+      console.log('Sent to Factory:', $scope.events);
 
       // *** UNCOMMENT WHEN ALGORITHM CONNECTED ***
 
-      // var apiEvents = Algorithm.makeAPI($scope.sortSchedule(), $scope.userData);
-      // apiEvents.forEach(function(event) {
-      // SEND TO API
-      // });
+      console.log('Sorted Schedule:', $scope.sortedEvents);
+      console.log('User Data:', $scope.userData);
 
+      var apiEvents = Algorithm.makeAPI($scope.sortedEvents, $scope.userData);
+
+      // Send each event to the API
+      apiEvents.forEach(function(event) {
+
+        console.log('Sending event to Google:', event);
+
+        Tasks.sendToGoogle(event);
+
+      });
+
+      // // *** TEST EVENT / WILL POST TO CALENDAR ***
+      // var testEvent = {
+      //   "summary": "App is Working!",
+      //   "start": {
+      //     "dateTime": "2017-02-06T14:30:00-07:00"
+      //   },
+      //   "end": {
+      //     "dateTime": "2017-02-06T16:30:00-07:00"
+      //   }
+      // };
+
+      // console.log('Actually sending this:', testEvent);
+
+      // Tasks.sendToGoogle(testEvent);
+
+      $scope.redirect('/calendar');
     };
 
     $scope.redirect = function(page) {

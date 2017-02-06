@@ -30,6 +30,7 @@
     "express-session": "^1.13.0",
     "google-auth-library": "^0.10.0",
     "jquery": "^2.2.1",
+    "jstimezonedetect": "^1.0.6",
     "lodash": "^4.6.1",
     "mongoose": "^4.8.1",
     "request": "^2.34.0",
