@@ -2,7 +2,7 @@ console.log('Services.js Loaded.');
 
 angular.module('app.services', [])
 
-.factory('Tasks', function ($http) {
+.factory('Tasks', function ($http, $location) {
 
   // User data to be populated on login
   var userData = {};
@@ -59,6 +59,9 @@ angular.module('app.services', [])
     })
     .then(function(res) {
       return res;
+    })
+    .then(function() {
+      $location.path('/calendar');
     });
   };
 

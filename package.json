@@ -32,7 +32,6 @@
     "google-auth-library": "^0.10.0",
     "jasmine": "^2.5.3",
     "jquery": "^2.2.1",
-    "jstimezonedetect": "^1.0.6",
     "lodash": "^4.6.1",
     "mongoose": "^4.8.1",
     "request": "^2.34.0",
